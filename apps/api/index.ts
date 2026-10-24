@@ -1,4 +1,6 @@
 import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 
 import v1Router from "./core/router.ts";
@@ -6,8 +8,14 @@ import connectDB from "./core/db.ts";
 
 config();
 const app = express();
-connectDB(); // to connect the db
 
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 app.get("/", (_, res) => {

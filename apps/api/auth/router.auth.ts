@@ -23,18 +23,30 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
+    console.log("Login attempt:", email);
     const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ error: "user not found" });
+    if (!user) {
+      console.log("User not found");
+      return res.status(404).json({ error: "user not found" });
+    }
+    console.log("User found:", user.email);
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log("Password match:", isMatch);
     if (!isMatch) return res.status(403).json({ error: "Invalid credentials" });
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
       expiresIn: "7d",
     });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     res.status(200).json({
       message: "User login successfully",
-      token,
     });
   } catch (err) {
+    console.error("Login error:", err);
     res.status(503).json("server error");
   }
 });
@@ -51,6 +63,11 @@ router.post("/forget", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Server error" });
   }
+});
+
+router.post("/logout", (_, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logged out successfully" });
 });
 
 export default router;
