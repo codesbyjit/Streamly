@@ -172,42 +172,368 @@ Initial ranking uses watch history, category affinity, recency, and engagement. 
 
 ```text
 streamly/
-├── apps/
-│   ├── web/
-│   └── admin/
-├── services/
+│
+├── apps/                                  # Client applications
+│   │
+│   ├── web/                               # Next.js web application
+│   │   ├── public/
+│   │   │   ├── images/
+│   │   │   ├── icons/
+│   │   │   └── fonts/
+│   │   ├── src/
+│   │   │   ├── app/
+│   │   │   │   ├── (auth)/
+│   │   │   │   │   ├── login/
+│   │   │   │   │   ├── register/
+│   │   │   │   │   └── layout.tsx
+│   │   │   │   ├── (main)/
+│   │   │   │   │   ├── page.tsx          # Home feed
+│   │   │   │   │   ├── watch/[videoId]/
+│   │   │   │   │   ├── search/
+│   │   │   │   │   ├── shorts/            # Optional future feature
+│   │   │   │   │   ├── subscriptions/
+│   │   │   │   │   ├── history/
+│   │   │   │   │   └── layout.tsx
+│   │   │   │   ├── channel/[channelId]/
+│   │   │   │   ├── studio/
+│   │   │   │   │   ├── videos/
+│   │   │   │   │   ├── upload/
+│   │   │   │   │   └── analytics/
+│   │   │   │   ├── settings/
+│   │   │   │   ├── layout.tsx
+│   │   │   │   ├── globals.css
+│   │   │   │   └── providers.tsx
+│   │   │   ├── components/
+│   │   │   │   ├── layout/
+│   │   │   │   ├── navigation/
+│   │   │   │   ├── video/
+│   │   │   │   ├── player/
+│   │   │   │   ├── feed/
+│   │   │   │   └── common/
+│   │   │   ├── features/
+│   │   │   │   ├── auth/
+│   │   │   │   ├── upload/
+│   │   │   │   ├── playback/
+│   │   │   │   ├── comments/
+│   │   │   │   └── subscriptions/
+│   │   │   ├── hooks/
+│   │   │   ├── lib/
+│   │   │   └── middleware.ts
+│   │   ├── tests/
+│   │   ├── next.config.ts
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   │
+│   ├── mobile/                            # React Native / Expo
+│   │   ├── app/
+│   │   │   ├── (auth)/
+│   │   │   ├── (tabs)/
+│   │   │   ├── watch/[videoId].tsx
+│   │   │   ├── channel/[channelId].tsx
+│   │   │   └── _layout.tsx
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   ├── features/
+│   │   │   ├── hooks/
+│   │   │   ├── lib/
+│   │   │   └── player/
+│   │   ├── assets/
+│   │   ├── app.json
+│   │   └── package.json
+│   │
+│   └── admin/                             # Internal administration UI
+│       ├── src/
+│       │   ├── app/
+│       │   ├── components/
+│       │   └── features/
+│       └── package.json
+│
+├── services/                              # Backend microservices
+│   │
 │   ├── api-gateway/
+│   │   ├── src/
+│   │   │   ├── routes/
+│   │   │   ├── middleware/
+│   │   │   ├── guards/
+│   │   │   ├── plugins/
+│   │   │   ├── config/
+│   │   │   ├── app.ts
+│   │   │   └── server.ts
+│   │   ├── tests/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
 │   ├── auth-service/
+│   │   ├── src/
+│   │   │   ├── modules/
+│   │   │   │   ├── registration/
+│   │   │   │   ├── login/
+│   │   │   │   ├── sessions/
+│   │   │   │   ├── tokens/
+│   │   │   │   └── password-reset/
+│   │   │   ├── middleware/
+│   │   │   ├── config/
+│   │   │   ├── app.ts
+│   │   │   └── server.ts
+│   │   ├── migrations/
+│   │   ├── tests/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
 │   ├── user-service/
+│   │   ├── src/
+│   │   │   ├── modules/
+│   │   │   │   ├── profiles/
+│   │   │   │   ├── channels/
+│   │   │   │   └── preferences/
+│   │   │   ├── repositories/
+│   │   │   ├── config/
+│   │   │   └── server.ts
+│   │   ├── migrations/
+│   │   ├── tests/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
 │   ├── content-service/
+│   │   ├── src/
+│   │   │   ├── modules/
+│   │   │   │   ├── videos/
+│   │   │   │   ├── metadata/
+│   │   │   │   ├── categories/
+│   │   │   │   └── publication/
+│   │   │   ├── repositories/
+│   │   │   ├── events/
+│   │   │   ├── config/
+│   │   │   └── server.ts
+│   │   ├── migrations/
+│   │   ├── tests/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
 │   ├── upload-service/
+│   │   ├── src/
+│   │   │   ├── modules/
+│   │   │   │   ├── upload-sessions/
+│   │   │   │   ├── multipart-uploads/
+│   │   │   │   └── completion/
+│   │   │   ├── storage/
+│   │   │   ├── events/
+│   │   │   ├── config/
+│   │   │   └── server.ts
+│   │   ├── migrations/
+│   │   ├── tests/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
 │   ├── streaming-service/
+│   │   ├── src/
+│   │   │   ├── modules/
+│   │   │   │   ├── playback/
+│   │   │   │   ├── authorization/
+│   │   │   │   └── manifests/
+│   │   │   ├── storage/
+│   │   │   ├── config/
+│   │   │   └── server.ts
+│   │   ├── tests/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
 │   ├── video-processing-service/
+│   │   ├── src/
+│   │   │   ├── consumers/
+│   │   │   │   └── video-uploaded.consumer.ts
+│   │   │   ├── processors/
+│   │   │   │   ├── probe-media.ts
+│   │   │   │   ├── transcode-video.ts
+│   │   │   │   ├── generate-hls.ts
+│   │   │   │   └── generate-thumbnail.ts
+│   │   │   ├── ffmpeg/
+│   │   │   ├── storage/
+│   │   │   ├── events/
+│   │   │   ├── config/
+│   │   │   └── worker.ts
+│   │   ├── tests/
+│   │   ├── Dockerfile                    # Includes FFmpeg
+│   │   └── package.json
+│   │
 │   ├── search-service/
+│   │   ├── src/
+│   │   │   ├── modules/
+│   │   │   ├── indexing/
+│   │   │   ├── consumers/
+│   │   │   ├── opensearch/
+│   │   │   ├── config/
+│   │   │   └── server.ts
+│   │   ├── tests/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
 │   ├── social-service/
+│   │   ├── src/
+│   │   │   ├── modules/
+│   │   │   │   ├── comments/
+│   │   │   │   ├── reactions/
+│   │   │   │   └── subscriptions/
+│   │   │   ├── repositories/
+│   │   │   ├── events/
+│   │   │   ├── config/
+│   │   │   └── server.ts
+│   │   ├── migrations/
+│   │   ├── tests/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
 │   ├── recommendation-service/
+│   │   ├── src/
+│   │   │   ├── api/
+│   │   │   ├── candidates/
+│   │   │   ├── ranking/
+│   │   │   ├── filters/
+│   │   │   ├── features/
+│   │   │   ├── consumers/
+│   │   │   └── main.py
+│   │   ├── tests/
+│   │   ├── Dockerfile
+│   │   └── pyproject.toml
+│   │
 │   ├── notification-service/
+│   │   ├── src/
+│   │   │   ├── consumers/
+│   │   │   ├── channels/
+│   │   │   ├── templates/
+│   │   │   ├── delivery/
+│   │   │   └── worker.ts
+│   │   ├── tests/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
 │   └── analytics-service/
-├── packages/
+│       ├── src/
+│       │   ├── ingestion/
+│       │   ├── consumers/
+│       │   ├── aggregation/
+│       │   ├── metrics/
+│       │   └── worker.ts
+│       ├── tests/
+│       ├── Dockerfile
+│       └── package.json
+│
+├── packages/                              # Shared workspace packages
+│   │
 │   ├── contracts/
+│   │   ├── src/
+│   │   │   ├── events/
+│   │   │   │   ├── video.events.ts
+│   │   │   │   ├── user.events.ts
+│   │   │   │   └── social.events.ts
+│   │   │   ├── api/
+│   │   │   └── index.ts
+│   │   └── package.json
+│   │
 │   ├── api-client/
+│   │   ├── src/
+│   │   └── package.json
+│   │
 │   ├── config/
+│   │   ├── eslint/
+│   │   ├── typescript/
+│   │   └── package.json
+│   │
+│   ├── database/
+│   │   ├── src/
+│   │   └── package.json
+│   │
 │   ├── logger/
+│   │   ├── src/
+│   │   └── package.json
+│   │
+│   ├── observability/
+│   │   ├── src/
+│   │   └── package.json
+│   │
 │   ├── validation/
+│   │   ├── src/
+│   │   └── package.json
+│   │
 │   └── ui/
+│       ├── src/
+│       │   ├── components/
+│       │   └── index.ts
+│       └── package.json
+│
 ├── infrastructure/
-│   ├── compose/
-│   ├── kafka/
+│   │
+│   ├── docker/
+│   │   ├── docker-compose.yml             # Local infrastructure
+│   │   ├── .env.example
+│   │   ├── README.md
+│   │   └── prometheus/
+│   │       └── prometheus.yml
+│   │
 │   ├── postgres/
-│   ├── redis/
+│   │   ├── init/
+│   │   └── README.md
+│   │
+│   ├── kafka/
+│   │   ├── topics/
+│   │   └── README.md
+│   │
 │   ├── minio/
+│   │   └── README.md
+│   │
 │   ├── opensearch/
-│   └── monitoring/
-├── ml/
-│   └── recommendation/
+│   │   └── README.md
+│   │
+│   ├── monitoring/
+│   │   ├── grafana/
+│   │   │   └── provisioning/
+│   │   └── alerts/
+│   │
+│   └── kubernetes/                        # Future deployment
+│       ├── base/
+│       └── overlays/
+│
+├── ml/                                    # Recommendation experiments
+│   ├── datasets/
+│   ├── notebooks/
+│   ├── feature-engineering/
+│   ├── training/
+│   └── evaluation/
+│
+├── tests/
+│   ├── integration/
+│   ├── e2e/
+│   ├── performance/
+│   └── fixtures/
+│
 ├── docs/
-│   └── architecture/
-├── docker-compose.yml
+│   ├── architecture/
+│   │   ├── overview.md
+│   │   ├── service-boundaries.md
+│   │   └── data-flow.md
+│   ├── api/
+│   ├── events/
+│   ├── decisions/
+│   └── runbooks/
+│
+├── scripts/
+│   ├── dev/
+│   ├── db/
+│   └── kafka/
+│
+├── .github/
+│   └── workflows/
+│       ├── lint.yml
+│       ├── test.yml
+│       └── build.yml
+│
+├── .env.example
+├── .gitignore
+├── .dockerignore
 ├── package.json
+├── bun.lock
+├── turbo.json
+├── tsconfig.base.json
+├── docker-compose.yml                     # Optional app orchestration
 └── README.md
 ```
