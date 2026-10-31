@@ -47,4 +47,10 @@ export async function registerProxies(
     prefix: "/internal/v1/search",
     rewritePrefix: "/internal/v1/search"
   });
+
+  await app.register(fastifyHttpProxy, {
+    upstream: env.SOCIAL_SERVICE_URL,
+    prefix: "/api/v1/social",
+    rewritePrefix: "/api/v1/social"
+  });
 }
