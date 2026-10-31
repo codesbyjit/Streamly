@@ -65,4 +65,16 @@ export async function registerProxies(
     prefix: "/internal/v1/notification",
     rewritePrefix: "/internal/v1/notification"
   });
+
+  await app.register(fastifyHttpProxy, {
+    upstream: env.ANALYTICS_SERVICE_URL,
+    prefix: "/api/v1/analytics",
+    rewritePrefix: "/api/v1/analytics"
+  });
+
+  await app.register(fastifyHttpProxy, {
+    upstream: env.ANALYTICS_SERVICE_URL,
+    prefix: "/internal/v1/analytics",
+    rewritePrefix: "/internal/v1/analytics"
+  });
 }
