@@ -6,7 +6,7 @@ import cookie from "@fastify/cookie";
 import { config } from "./config.js";
 import authPlugin from "./auth.js";
 import authRoutes from "./routes/auth.routes.js";
-import healthRoutes from "./routes/health.js";
+import healthRoutes from "./routes/health.routes.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -35,7 +35,7 @@ export async function buildApp() {
   });
   await app.register(authPlugin);
 
-  await app.register(healthRoutes);
+  await app.register(healthRoutes, { prefix: "/api/v1/auth" });
   await app.register(authRoutes, { prefix: "/api/v1/auth" });
 
   app.setNotFoundHandler((_request, reply) => {

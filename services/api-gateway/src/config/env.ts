@@ -8,9 +8,9 @@ const envSchema = z.object({
   HOST: z.string().default("0.0.0.0"),
   PORT: z.coerce.number().int().min(1).max(65535).default(3000),
 
-  AUTH_SERVICE_URL: z.string().url().default("http://localhost:3001"),
-  CONTENT_SERVICE_URL: z.string().url().default("http://localhost:3002"),
-  SEARCH_SERVICE_URL: z.string().url().default("http://localhost:3003")
+  AUTH_SERVICE_URL: z.string().url().default("http://localhost:3002"),
+  CONTENT_SERVICE_URL: z.string().url().default("http://localhost:3003"),
+  SEARCH_SERVICE_URL: z.string().url().default("http://localhost:3004")
 });
 
 export function loadEnv(source: NodeJS.ProcessEnv = process.env) {
