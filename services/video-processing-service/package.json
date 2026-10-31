@@ -1,0 +1,32 @@
+{
+  "name": "@repo/video-processing-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Kafka-driven video processing worker for Streamly using FFmpeg and S3-compatible storage.",
+  "scripts": {
+    "dev": "tsx watch src/worker.ts",
+    "start": "node dist/worker.js",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.850.0",
+    "@aws-sdk/lib-storage": "^3.850.0",
+    "dotenv": "^16.6.1",
+    "kafkajs": "^2.2.4",
+    "pino": "^9.7.0",
+    "pino-pretty": "^13.1.1",
+    "zod": "^4.0.5",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.16.5",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4",
+    "@types/pg": "^8.15.5"
+  }
+}
