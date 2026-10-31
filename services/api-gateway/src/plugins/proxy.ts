@@ -14,8 +14,8 @@ export async function registerProxies(
 
   await app.register(fastifyHttpProxy, {
     upstream: env.CONTENT_SERVICE_URL,
-    prefix: "/api/v1/videos",
-    rewritePrefix: "/api/v1/videos"
+    prefix: "/api/v1/content",
+    rewritePrefix: "/api/v1/content"
   });
 
   await app.register(fastifyHttpProxy, {
