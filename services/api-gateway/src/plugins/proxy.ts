@@ -89,4 +89,16 @@ export async function registerProxies(
     prefix: "/internal/v1/recommendation",
     rewritePrefix: "/internal/v1/recommendation"
   });
+
+  await app.register(fastifyHttpProxy, {
+    upstream: env.LIVE_SERVICE_URL,
+    prefix: "/api/v1/live",
+    rewritePrefix: "/api/v1/live"
+  });
+
+  await app.register(fastifyHttpProxy, {
+    upstream: env.LIVE_SERVICE_URL,
+    prefix: "/internal/v1/live",
+    rewritePrefix: "/internal/v1/live"
+  });
 }

@@ -18,6 +18,7 @@ const envSchema = z.object({
   NOTIFICATION_SERVICE_URL: z.string().url().default("http://localhost:3009"),
   ANALYTICS_SERVICE_URL: z.string().url().default("http://localhost:3010"),
   RECOMMENDATION_SERVICE_URL: z.string().url().default("http://localhost:3011"),
+  LIVE_SERVICE_URL: z.string().url().default("http://localhost:3012")
 });
 
 export function loadEnv(source: NodeJS.ProcessEnv = process.env) {
