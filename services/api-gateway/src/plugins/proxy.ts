@@ -41,4 +41,10 @@ export async function registerProxies(
     prefix: "/api/v1/search",
     rewritePrefix: "/api/v1/search"
   });
+
+  await app.register(fastifyHttpProxy, {
+    upstream: env.SEARCH_SERVICE_URL,
+    prefix: "/internal/v1/search",
+    rewritePrefix: "/internal/v1/search"
+  });
 }
