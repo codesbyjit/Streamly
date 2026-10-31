@@ -11,6 +11,7 @@ const envSchema = z.object({
   AUTH_SERVICE_URL: z.string().url().default("http://localhost:3002"),
   CONTENT_SERVICE_URL: z.string().url().default("http://localhost:3003"),
   UPLOAD_SERVICE_URL: z.string().url().default("http://localhost:3004"),
+  USER_SERVICE_URL: z.string().url().default("http://localhost:3005"),
   SEARCH_SERVICE_URL: z.string().url().default("http://localhost:300")
 });
 
