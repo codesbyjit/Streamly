@@ -19,6 +19,12 @@ export async function registerProxies(
   });
 
   await app.register(fastifyHttpProxy, {
+    upstream: env.UPLOAD_SERVICE_URL,
+    prefix: "/api/v1/upload",
+    rewritePrefix: "/api/v1/upload"
+  });
+
+  await app.register(fastifyHttpProxy, {
     upstream: env.SEARCH_SERVICE_URL,
     prefix: "/api/v1/search",
     rewritePrefix: "/api/v1/search"

@@ -10,7 +10,8 @@ const envSchema = z.object({
 
   AUTH_SERVICE_URL: z.string().url().default("http://localhost:3002"),
   CONTENT_SERVICE_URL: z.string().url().default("http://localhost:3003"),
-  SEARCH_SERVICE_URL: z.string().url().default("http://localhost:3004")
+  UPLOAD_SERVICE_URL: z.string().url().default("http://localhost:3004"),
+  SEARCH_SERVICE_URL: z.string().url().default("http://localhost:300")
 });
 
 export function loadEnv(source: NodeJS.ProcessEnv = process.env) {

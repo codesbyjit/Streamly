@@ -31,7 +31,7 @@ function parseOrReply<T>(
   return parsed.data;
 }
 
-export async function videoRoutes(app: FastifyInstance) {
+export async function contentRoutes(app: FastifyInstance) {
   app.post("/", async (request, reply) => {
     const body = parseOrReply(createVideoSchema, request.body, reply);
     if (!body) return;

@@ -3,7 +3,7 @@ import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import { env } from "./config/env.js";
 import healthRoutes from "./routes/health.routes.js";
-import { videoRoutes } from "./routes/content.routes.js";
+import { contentRoutes } from "./routes/content.routes.js";
 
 export function buildApp() {
   const app = Fastify({
@@ -22,7 +22,7 @@ export function buildApp() {
   });
 
   app.register(healthRoutes, { prefix: "/api/v1/content" });
-  app.register(videoRoutes, { prefix: "/api/v1/content" });
+  app.register(contentRoutes, { prefix: "/api/v1/content" });
 
   app.setNotFoundHandler((_request, reply) => {
     return reply.code(404).send({ error: "NOT_FOUND", message: "Route not found" });
