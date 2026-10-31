@@ -53,4 +53,16 @@ export async function registerProxies(
     prefix: "/api/v1/social",
     rewritePrefix: "/api/v1/social"
   });
+
+  await app.register(fastifyHttpProxy, {
+    upstream: env.NOTIFICATION_SERVICE_URL,
+    prefix: "/api/v1/notification",
+    rewritePrefix: "/api/v1/notification"
+  });
+
+  await app.register(fastifyHttpProxy, {
+    upstream: env.NOTIFICATION_SERVICE_URL,
+    prefix: "/internal/v1/notification",
+    rewritePrefix: "/internal/v1/notification"
+  });
 }
