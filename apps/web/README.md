@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+# Streamly Web
 
-## Getting Started
+Next.js frontend for the Streamly monorepo. It uses the existing API gateway and service contracts; it does not create or own a database.
 
-First, run the development server:
+## Setup
+
+From the repository root:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+cp apps/web/.env.example apps/web/.env.local
+pnpm --filter web dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The API gateway must be running at `http://localhost:4000`. Override `API_GATEWAY_URL` in `apps/web/.env.local` if needed.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load Inter, a custom Google Font.
+## Implemented
 
-## Learn More
+- Responsive dark video discovery feed
+- Search by title against the currently returned public feed
+- Register, login, refresh-token rotation and logout through Next.js route handlers
+- HttpOnly access and refresh cookies
+- Upload flow: create upload session, PUT directly to MinIO, complete session, create video metadata
+- Watch page using Shaka Player for HLS playback
 
-To learn more about Next.js, take a look at the following resources:
+## Backend integration notes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The frontend follows the current service routes:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `POST /api/v1/auth/register`
+- `POST /api/v1/auth/login`
+- `POST /api/v1/auth/refresh`
+- `POST /api/v1/auth/logout`
+- `GET /api/v1/auth/me`
+- `GET|POST /api/v1/content`
+- `GET /api/v1/content/:videoId`
+- `POST /api/v1/upload`
+- `POST /api/v1/upload/:uploadId/complete`
+- `GET /api/v1/stream/:videoId/playback`
 
-## Deploy on Vercel
+The upload service currently uses `x-dev-user-id` development identity, while content creation accepts `ownerId` in the request body. The Next.js upload route extracts the JWT subject only to pass this local development identity header. This is not production authentication. Replace the service's development identity mechanism with verified JWT authentication before deployment.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The content create endpoint in the current backend schema does not accept a `videoId` from the upload session. The upload route therefore creates metadata with the service-generated ID, while the upload worker emits the upload-session video ID. Align those IDs in the backend before relying on the full upload-to-processing-to-playback flow. The UI upload flow is wired to the current endpoints but this ID mismatch must be fixed server-side.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MinIO must allow browser PUT requests from `http://localhost:3000` (CORS). The upload service's `S3_ENDPOINT` used to generate the presigned URL must be reachable by the browser, normally `http://localhost:9000` for local development.
+
+## Scope
+
+This is a minimal functional starting UI, not a finished YouTube clone. Search, subscriptions, watch history, comments, likes, creator studio analytics and channel pages are not included yet because the corresponding frontend-facing backend flows are not fully available in the current service contracts.
