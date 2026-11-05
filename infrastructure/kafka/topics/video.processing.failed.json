@@ -1,0 +1,11 @@
+{
+  "topic": "video.processing.failed",
+  "partitions": 3,
+  "replicationFactor": 1,
+  "configs": {
+    "cleanup.policy": "delete",
+    "retention.ms": "604800000"
+  },
+  "eventKey": "videoId",
+  "description": "Emitted when video processing fails; consumers can use this for retry or failure workflows."
+}

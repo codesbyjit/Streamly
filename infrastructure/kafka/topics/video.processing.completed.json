@@ -1,0 +1,11 @@
+{
+  "topic": "video.processing.completed",
+  "partitions": 3,
+  "replicationFactor": 1,
+  "configs": {
+    "cleanup.policy": "delete",
+    "retention.ms": "604800000"
+  },
+  "eventKey": "videoId",
+  "description": "Emitted when transcoding and required processing outputs are complete."
+}

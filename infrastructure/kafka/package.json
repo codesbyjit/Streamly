@@ -1,0 +1,15 @@
+{
+  "name": "@repo/kafka-infrastructure",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "topics:apply": "tsx ./scripts/apply-topics.ts",
+    "topics:apply:partitions": "tsx ./scripts/apply-topics.ts --partitions"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.20.6",
+    "typescript": "^7"
+  }
+}
