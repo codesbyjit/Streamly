@@ -22,7 +22,7 @@ const schema = z.object({
   S3_KEY_PREFIX: z.string().default("originals"),
   KAFKA_BROKERS: z.string().default(""),
   KAFKA_CLIENT_ID: z.string().default("streamly-upload-service"),
-  KAFKA_TOPIC_VIDEO_UPLOADED: z.string().default("streamly.video.uploaded.v1"),
+  KAFKA_TOPIC_VIDEO_UPLOADED: z.string().default("video.uploaded"),
   KAFKA_SSL: bool.default("false"),
   DEV_AUTH_ENABLED: bool.default("true"),
   DEV_USER_HEADER: z.string().default("x-dev-user-id"),

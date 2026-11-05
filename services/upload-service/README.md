@@ -61,7 +61,7 @@ curl -X POST http://localhost:4010/v1/uploads/UPLOAD_ID/complete \
   -d '{}'
 ```
 
-The service verifies the object in storage and emits `streamly.video.uploaded.v1` when Kafka is configured. Event publishing uses a transactional outbox table so a transient Kafka outage does not lose the event. A background dispatcher retries pending outbox records.
+The service verifies the object in storage and emits `video.uploaded` when Kafka is configured. Event publishing uses a transactional outbox table so a transient Kafka outage does not lose the event. A background dispatcher retries pending outbox records.
 
 ## Event contract
 

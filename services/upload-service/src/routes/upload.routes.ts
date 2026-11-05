@@ -147,8 +147,8 @@ export function errorHandler(
 
   const statusCode =
     error.statusCode &&
-    error.statusCode >= 400 &&
-    error.statusCode < 500
+      error.statusCode >= 400 &&
+      error.statusCode < 500
       ? error.statusCode
       : 500;
 

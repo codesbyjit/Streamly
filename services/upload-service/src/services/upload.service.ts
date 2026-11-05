@@ -216,7 +216,9 @@ export async function dispatchOutboxBatch(limit = 50): Promise<number> {
     [limit]
   );
   let sent = 0;
-  for (const row of candidates.rows as Array<{ id: string; topic: string; aggregate_id: string; payload: unknown }>) {
+  for (const row of candidates.rows as Array<{
+    event_type: any; id: string; topic: string; aggregate_id: string; payload: unknown 
+}>) {
     // Claim with a short DB lock to reduce duplicate sends if multiple instances run.
     const claim = await pool.query(
       `UPDATE event_outbox SET attempts = attempts + 1
@@ -225,11 +227,15 @@ export async function dispatchOutboxBatch(limit = 50): Promise<number> {
       [row.id]
     );
     if (claim.rowCount !== 1) continue;
+    console.log("[OUTBOX] Publishing event", {
+      topic: row.topic,
+      eventType: row.event_type
+    });
     try {
       await publish(row.topic, row.aggregate_id, row.payload);
       await pool.query(
         `UPDATE event_outbox SET published_at = NOW(), last_error = NULL
-         WHERE id = $1`,
+        WHERE id = $1`,
         [row.id]
       );
       sent++;
